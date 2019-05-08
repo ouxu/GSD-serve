@@ -1,0 +1,19 @@
+# idea
+.idea/
+.vscode/
+
+# config
+config/
+
+# log
+log/
+
+# dependencies
+/node_modules
+package-lock.json
+
+# misc
+.DS_Store
+npm-debug.log*
+**.log
+
