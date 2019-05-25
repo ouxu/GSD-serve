@@ -1,16 +1,11 @@
 const Koa = require('koa');
 
 const app = new Koa();
-
-const baseConfig = require('./middleware/base');
-const middleware = require('./middleware/index');
+const middleware = require('./middleware');
 const routes = require('./routes');
 
 app.use(middleware()); // 用户自己写的中间件
-
-baseConfig(app);
-
-routes.map(e => app.use(e.routes()));
+app.use(routes()); // 路由
 
 app.listen(3003, (err) => {
   if (err) throw err;

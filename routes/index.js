@@ -1,11 +1,8 @@
-const indexRouter = require('koa-router')();
-const indexController = require('../controller/index');
+const compose = require('koa-compose');
 
-const user = require('./user');
+const routes = require('require-all')({
+  dirname: `${__dirname}/`,
+  filter: /^((?!index).)/,
+});
 
-indexRouter.get('/', indexController.index);
-
-module.exports = [
-  indexRouter,
-  user,
-];
+module.exports = () => compose(Object.values(routes).map(e => e.prefix('/api').routes()));
