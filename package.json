@@ -26,6 +26,7 @@
     "koa-logger": "^3.2.0",
     "koa-mongo": "^1.8.0",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "nodemailer": "^4.4.0",
     "restc": "^0.3.2"
