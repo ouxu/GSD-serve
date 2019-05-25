@@ -13,7 +13,7 @@ class UserService {
     const isMatch = await bcrypt.compare(password, result.password);
 
     if (!isMatch) {
-      throw new Error('密码错误');
+      ctx.throw('密码错误');
     }
 
     const { nickname, id } = result;
@@ -42,7 +42,9 @@ class UserService {
   }
 
   static async getUser(ctx, id) {
-    const result = await ctx.db.get('users', { id });
+    const result = await ctx.db.get('users', { id }, {
+      columns: ['id', 'username', 'mobile', 'email'],
+    });
 
     return result;
   }
@@ -59,7 +61,7 @@ class UserService {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new Error('密码错误');
+      ctx.throw('密码错误');
     }
 
     const newPassword = await bcrypt.hash(vals.newPassword, 5);

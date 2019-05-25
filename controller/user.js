@@ -23,7 +23,7 @@ class UserController {
       .checkPred(val => val === ctx.vals.password);
 
     if (!ctx.vals.email && !ctx.vals.mobile) {
-      throw Error('email || password is required');
+      ctx.throw('email || password is required');
     }
 
     delete ctx.vals.passwordConfirm;
@@ -40,6 +40,9 @@ class UserController {
 
     const result = await service.getUser(ctx, ctx.vals);
 
+    if (!result) {
+      ctx.throw('用户不存在');
+    }
     ctx.body = result;
   }
 
