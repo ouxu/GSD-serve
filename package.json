@@ -29,6 +29,7 @@
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "nodemailer": "^4.4.0",
+    "require-all": "^3.0.0",
     "restc": "^0.3.2"
   },
   "devDependencies": {
