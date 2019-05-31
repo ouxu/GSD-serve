@@ -4,7 +4,7 @@ const project = require('../controller/project');
 router.prefix('/project');
 
 router.get('/', project.getProjects);
-router.get('/:id', project.getProject);
-router.post('/:id/update', project.update);
+router.post('/create', project.createProject);
+router.get('/info/:id', project.getProject);
 
 module.exports = router;

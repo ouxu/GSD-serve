@@ -1,42 +1,35 @@
-const dayjs = require('dayjs');
-const flush = require('just-flush');
-const service = require('../service/user.js');
-const regexp = require('../utils/regexp.js');
+const service = require('../service/project.js');
 
 class ProjectController {
-  static async getProject(ctx) {
-    ctx.validateParam('id').required().isString();
-
-    const result = await service.getUser(ctx, ctx.vals);
-    if (!result) {
-      ctx.throw('用户不存在');
+  static async createProject(ctx) {
+    ctx.validateBody('name').required().isString();
+    ctx.validateBody('description').required().isString();
+    const { id = '' } = ctx.user;
+    const insertId = await service.createProject(ctx, id, ctx.vals);
+    if (!insertId) {
+      ctx.throw('项目创建失败');
     }
 
-    ctx.body = result;
+    ctx.body = insertId;
+  }
+
+  static async getProject(ctx) {
+    ctx.validateParam('id').required().isString();
+    const projectId = ctx.vals.id;
+    const { id = '' } = ctx.user;
+    const project = await service.getProject(ctx, id, projectId);
+    if (!project) {
+      ctx.throw('项目不存在');
+    }
+    ctx.body = project;
   }
 
   static async getProjects(ctx) {
-    ctx.validateParam('id').required().isString();
-
-    const result = await service.getUser(ctx, ctx.vals);
-
-    ctx.body = result;
-  }
-
-  static async update(ctx) {
-    ctx.validateBody('username').optional().isString();
-    ctx.validateBody('email').optional().isString().isEmail();
-    ctx.validateBody('mobile').optional().isString().match(regexp.mobile);
-    ctx.validateBody('avatar').optional().isString();
-    ctx.validateBody('signature').optional().isString();
-    ctx.validateBody('gender').optional().isString().isIn(['男', '女'], 'Invalid gender');
-    ctx.validateBody('birthday').optional().isInt().checkPred(val => dayjs(val).isValid())
-      .tap(x => dayjs(x).format('YYYY-MM-DD HH:mm:ss'));
-
+    ctx.validateBody('page').optional().toInt().defaultTo(1);
+    ctx.validateBody('size').optional().toInt().defaultTo(2);
     const { id = '' } = ctx.user;
-    const result = await service.update(ctx, id, flush(ctx.vals));
-
-    ctx.body = result;
+    const projects = await service.getProjects(ctx, id, ctx.vals);
+    ctx.body = projects;
   }
 }
 
