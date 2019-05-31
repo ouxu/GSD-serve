@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon app.js",
-    "debug": "nodemon --inspect app.js",
+    "debug": "DEBUG=* nodemon --inspect app.js",
     "prod": "cross-env NODE_ENV=production node app.js",
     "pm2": "cross-env NODE_ENV=production pm2 start .pm.json",
     "lint": "eslint ./ --fix --ext .js"
