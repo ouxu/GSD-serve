@@ -1,0 +1,68 @@
+@BaseURL = http://localhost:3003/api
+@contentType = application/json
+@dateNow = {{$datetime iso8601}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJyb2xlIjoidXNlciJ9LCJleHAiOjE1NjE4Nzc2MzUsImlhdCI6MTU1OTI4NTYzNX0.Ne2orvPH-SFj-QIjtP43FIBwuFsfvKZsnki5L27qeLs
+
+### login
+POST {{BaseURL}}/user/login HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"identifier": "out_xu@outlook.com",
+	"password": "000000"
+}
+
+### register
+POST {{BaseURL}}/user/register HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+{
+	"username": "ouxu",
+	"password": "000000",
+	"passwordConfirm": "000000",
+	"mobile": "15603315033"
+}
+
+### get user by id
+GET  {{BaseURL}}/user/info/6 HTTP/1.1
+token: {{token}}
+
+### update userinfo
+POST  {{BaseURL}}/user/info/update HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"birthday": "{{dateNow}}"
+}
+
+### modify password
+POST  {{BaseURL}}/user/modifyPassword HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"password": "000000",
+	"newPasswordConfirm": "000000",
+	"newPassword": "000000"
+}
+
+### reset password
+POST  {{BaseURL}}/user/resetPassword HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"passwordConfirm": "000000",
+	"password": "000000"
+}
+
+### forget password
+POST  {{BaseURL}}/user/forgetPassword HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"email": "out_xu@outlook.com"
+}

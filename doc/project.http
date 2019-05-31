@@ -1,0 +1,28 @@
+@BaseURL = http://localhost:3003/api
+@contentType = application/json
+@dateNow = {{$datetime iso8601}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJyb2xlIjoidXNlciJ9LCJleHAiOjE1NjE4Nzc2MzUsImlhdCI6MTU1OTI4NTYzNX0.Ne2orvPH-SFj-QIjtP43FIBwuFsfvKZsnki5L27qeLs
+
+### create project
+POST {{BaseURL}}/project/create HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"name": "测试项目{{dateNow}}",
+	"description": "测试项目{{dateNow}}"
+}
+
+### get project
+GET {{BaseURL}}/project/info/1003 HTTP/1.1
+token: {{token}}
+
+### get projects
+GET {{BaseURL}}/project/ HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"page": "2",
+	"size": "10"
+}
