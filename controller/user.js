@@ -7,11 +7,9 @@ class UserController {
   static async login(ctx) {
     ctx.validateBody('identifier').required().isLength(6, 100, 'identifier must be 6-100 chars');
     ctx.validateBody('password').required().isString().match(regexp.password);
-    const token = await service.login(ctx, ctx.vals);
+    const user = await service.login(ctx, ctx.vals);
 
-    ctx.body = {
-      token,
-    };
+    ctx.body = user;
   }
 
   static async register(ctx) {
@@ -38,7 +36,7 @@ class UserController {
   static async getUser(ctx) {
     ctx.validateParam('id').required().isString();
 
-    const result = await service.getUser(ctx, ctx.vals);
+    const result = await service.getUser(ctx, ctx.vals.id);
 
     if (!result) {
       ctx.throw('用户不存在');
@@ -53,7 +51,7 @@ class UserController {
     ctx.validateBody('avatar').optional().isString();
     ctx.validateBody('signature').optional().isString();
     ctx.validateBody('gender').optional().isString().isIn(['男', '女'], 'Invalid gender');
-    ctx.validateBody('birthday').optional().isInt().checkPred(val => dayjs(val).isValid())
+    ctx.validateBody('birthday').optional().checkPred(val => dayjs(val).isValid())
       .tap(x => dayjs(x).format('YYYY-MM-DD HH:mm:ss'));
 
     const { id = '' } = ctx.user;

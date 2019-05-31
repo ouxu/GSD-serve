@@ -16,15 +16,18 @@ class UserService {
       ctx.throw('密码错误');
     }
 
-    const { nickname, id } = result;
+    const { nickname, id, role = 'user' } = result;
 
     const token = jsonwebtoken.sign({
-      data: { nickname, id },
+      data: { nickname, id, role },
       // 60 seconds * 60 minutes = 1 hour, 共一个月
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30),
     }, jwt.secret);
 
-    return token;
+    delete result.password;
+    result.token = token;
+
+    return result;
   }
 
   static async register(ctx, vals) {
@@ -43,7 +46,7 @@ class UserService {
 
   static async getUser(ctx, id) {
     const result = await ctx.db.get('users', { id }, {
-      columns: ['id', 'username', 'mobile', 'email'],
+      columns: ['id', 'username', 'mobile', 'email', 'avatar', 'signature', 'gender', 'birthday', 'createdAt'],
     });
 
     return result;
