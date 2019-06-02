@@ -23,6 +23,7 @@ content-type: {{contentType}}
 token: {{token}}
 
 {
-	"page": "2",
-	"size": "10"
+	"page": "1",
+	"size": "10",
+  "keyword": "测试"
 }

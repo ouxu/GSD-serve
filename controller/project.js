@@ -27,6 +27,7 @@ class ProjectController {
   static async getProjects(ctx) {
     ctx.validateBody('page').optional().toInt().defaultTo(1);
     ctx.validateBody('size').optional().toInt().defaultTo(2);
+    ctx.validateBody('keyword').optional().toString().defaultTo('');
     const { id = '' } = ctx.user;
     const projects = await service.getProjects(ctx, id, ctx.vals);
     ctx.body = projects;

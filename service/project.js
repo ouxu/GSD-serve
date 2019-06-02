@@ -1,3 +1,5 @@
+const model = require('../model/project');
+
 const PAGE = 1;
 const SIZE = 2;
 
@@ -27,14 +29,7 @@ class ProjectService {
   }
 
   static async getProject(ctx, userId, projectId) {
-    const sql = `
-      SELECT projects.*, users.username
-      FROM projects
-      JOIN user_project ON projects.id=user_project.projectId
-      JOIN users ON projects.ownerId=users.id
-      WHERE projects.id=:projectId AND users.id=:userId;
-    `;
-    const rows = await ctx.db.query(sql, { projectId, userId });
+    const rows = await ctx.db.query(model.getProject(), { projectId, userId });
 
     if (rows && rows[0]) {
       return rows[0];
@@ -43,28 +38,13 @@ class ProjectService {
   }
 
   static async getProjects(ctx, id, params) {
-    const { page = 1, size = 2 } = params;
-    const sql = `
-      SELECT projects.*, users.username
-      FROM projects
-      JOIN users ON projects.ownerId=users.id
-      WHERE users.id=:id
-      LIMIT :offset,:limit;
-    `;
-    const list = await ctx.db.query(sql, {
-      id,
-      ...params,
-      limit: size,
-      offset: (page - 1) * size,
-    });
+    const { page = 1, size = 2, keyword } = params;
+    const offset = (page - 1) * size;
+    const list = await ctx.db.query(model.getProjects({
+      id, keyword, limit: size, offset,
+    }));
 
-    delete params.page;
-    delete params.size;
-
-    const total = await ctx.db.count('projects', {
-      id,
-      ...params,
-    });
+    const total = await ctx.db.query(model.getProjectCount({ keyword, id }));
 
     return {
       list, page, size, total,
