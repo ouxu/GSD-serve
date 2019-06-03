@@ -44,7 +44,9 @@ class ProjectService {
       id, keyword, limit: size, offset,
     }));
 
-    const total = await ctx.db.query(model.getProjectCount({ keyword, id }));
+    const totalRow = await ctx.db.query(model.getProjectCount({ keyword, id }));
+
+    const total = totalRow && totalRow[0] ? totalRow[0].count : 0;
 
     return {
       list, page, size, total,

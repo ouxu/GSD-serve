@@ -7,7 +7,7 @@ class ProjectModel {
       .field('projects.*').field('users.username', 'owner')
       .join('user_project', null, 'projects.id=user_project.projectId')
       .join('users', null, 'projects.ownerId=users.id')
-      .where('projects.id=:projectId AND users.id=:userId');
+      .where('projects.id=:projectId AND user_project.userId=:userId');
 
     return sql.toString();
   }
@@ -17,16 +17,17 @@ class ProjectModel {
       limit, offset, id, keyword,
     } = query;
     const sql = squel.select();
-    let where = `user_project.userId=${id} `;
+
+    const where = squel.expr().and('user_project.userId=?', id);
     if (keyword) {
-      where += `AND projects.name LIKE '%${keyword}%'`;
+      where.and('projects.name LIKE ?', `%${keyword}%`);
     }
 
     sql.from('projects')
       .field('projects.*').field('users.username', 'owner')
       .join('user_project', null, 'projects.id=user_project.projectId')
       .join('users', null, 'projects.ownerId=users.id')
-      .where(where)
+      .where(where.toString())
       .limit(limit)
       .offset(offset);
 
@@ -34,18 +35,19 @@ class ProjectModel {
   }
 
   static getProjectCount(query) {
-    const {
-      id, keyword,
-    } = query;
+    const { id, keyword } = query;
+
     const sql = squel.select();
-    let where = `user_project.userId=${id} `;
+    const where = squel.expr().and('user_project.userId=?', id);
+
     if (keyword) {
-      where += `AND projects.name LIKE '%${keyword}%'`;
+      where.and('projects.name LIKE ?', `%${keyword}%`);
     }
+
     sql.from('projects')
       .field('COUNT(*)', 'count')
       .join('user_project', null, 'projects.id=user_project.projectId')
-      .where(where);
+      .where(where.toString());
 
     return sql.toString();
   }
