@@ -10,7 +10,8 @@ token: {{token}}
 
 {
 	"name": "测试项目{{dateNow}}",
-	"description": "测试项目{{dateNow}}"
+	"description": "测试项目{{dateNow}}",
+  "users": ["3", "6"]
 }
 
 ### get project
@@ -26,4 +27,16 @@ token: {{token}}
 	"page": "1",
 	"size": "10",
   "keyword": "测试"
+}
+
+### update project
+POST {{BaseURL}}/project/info/update HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1003",
+	"name": "测试项目-{{dateNow}}",
+	"description": "测试项目-{{dateNow}}",
+  "users": ["6"]
 }
