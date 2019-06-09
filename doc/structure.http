@@ -1,0 +1,65 @@
+@BaseURL = http://localhost:3003/api
+@contentType = application/json
+@dateNow = {{$datetime iso8601}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJyb2xlIjoidXNlciJ9LCJleHAiOjE1NjE4Nzc2MzUsImlhdCI6MTU1OTI4NTYzNX0.Ne2orvPH-SFj-QIjtP43FIBwuFsfvKZsnki5L27qeLs
+
+### create structure
+POST {{BaseURL}}/structure/create HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"name": "测试结构{{dateNow}}",
+	"description": "测试结构{{dateNow}}",
+  "users": ["2", "6"],
+  "tags": ["测试"],
+  "open": true
+}
+
+### get structure
+GET {{BaseURL}}/structure/info/1003 HTTP/1.1
+token: {{token}}
+
+### get structures
+GET {{BaseURL}}/structure/ HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"page": "1",
+	"size": "10",
+  "keyword": "测试"
+}
+
+### update structure
+POST {{BaseURL}}/structure/update HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002",
+  "name": "测试结构{{dateNow}}",
+	"description": "测试结构{{dateNow}}",
+  "users": ["6"],
+  "tags": ["测试2", "测试3"],
+  "open": true
+}
+
+### delete structure
+DELETE {{BaseURL}}/structure/delete HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002"
+}
+
+### migrate structure owner
+POST {{BaseURL}}/structure/migrateOwner HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1008",
+  "ownerId": "3"
+}
