@@ -37,6 +37,14 @@ class ProjectService {
     return !!row;
   }
 
+  static async checkOwner(ctx, ownerId, id) {
+    const row = await ctx.db.get('projects', {
+      id,
+      ownerId,
+    });
+    return !!row;
+  }
+
   static async getProject(ctx, userId, projectId) {
     const rows = await ctx.db.query(model.getProject(), { projectId, userId });
 
@@ -91,6 +99,27 @@ class ProjectService {
       await tran.rollback();
       throw err;
     }
+  }
+
+  static async deleteProject(ctx, id) {
+    const rows = {
+      id,
+      status: 'delete',
+      updatedAt: ctx.db.literals.now,
+    };
+    await ctx.db.update('projects', rows);
+    return true;
+  }
+
+  static async migrateOwner(ctx, vals) {
+    const { id, ownerId } = vals;
+    const rows = {
+      id,
+      ownerId,
+      updatedAt: ctx.db.literals.now,
+    };
+    await ctx.db.update('projects', rows);
+    return true;
   }
 }
 

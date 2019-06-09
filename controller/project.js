@@ -28,7 +28,7 @@ class ProjectController {
       ctx.throw('用户权限不足');
     }
     const project = await service.getProject(ctx, id, projectId);
-    if (!project) {
+    if (!project || !project.id) {
       ctx.throw('项目不存在');
     }
     ctx.body = project;
@@ -57,6 +57,35 @@ class ProjectController {
     }
 
     const result = await service.updateProject(ctx, id, ctx.vals);
+
+    ctx.body = result;
+  }
+
+  static async deleteProject(ctx) {
+    ctx.validateBody('id').required().isString();
+
+    const { id = '' } = ctx.user;
+
+    const hasPerm = await service.checkOwner(ctx, id, ctx.vals.id);
+    if (!hasPerm) {
+      ctx.throw('用户权限不足');
+    }
+    const result = await service.deleteProject(ctx, ctx.vals.id);
+
+    ctx.body = result;
+  }
+
+  static async migrateOwner(ctx) {
+    ctx.validateBody('id').required().isString();
+    ctx.validateBody('ownerId').required().isString();
+
+    const { id = '' } = ctx.user;
+
+    const hasPerm = await service.checkOwner(ctx, id, ctx.vals.id);
+    if (!hasPerm) {
+      ctx.throw('用户权限不足');
+    }
+    const result = await service.migrateOwner(ctx, ctx.vals);
 
     ctx.body = result;
   }

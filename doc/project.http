@@ -15,7 +15,7 @@ token: {{token}}
 }
 
 ### get project
-GET {{BaseURL}}/project/info/1003 HTTP/1.1
+GET {{BaseURL}}/project/info/1012 HTTP/1.1
 token: {{token}}
 
 ### get projects
@@ -30,13 +30,32 @@ token: {{token}}
 }
 
 ### update project
-POST {{BaseURL}}/project/info/update HTTP/1.1
+POST {{BaseURL}}/project/update HTTP/1.1
 content-type: {{contentType}}
 token: {{token}}
 
 {
 	"id": "1003",
-	"name": "测试项目-{{dateNow}}",
+	"name": "测试项2-{{dateNow}}",
 	"description": "测试项目-{{dateNow}}",
   "users": ["6"]
+}
+
+### delete project
+DELETE {{BaseURL}}/project/delete HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1012"
+}
+
+### migrate project owner
+POST {{BaseURL}}/project/migrateOwner HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1012",
+  "ownerId": "3"
 }

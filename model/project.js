@@ -7,7 +7,7 @@ class ProjectModel {
       .field('projects.*').field('users.username', 'owner')
       .join('user_project', null, 'projects.id=user_project.projectId')
       .join('users', null, 'projects.ownerId=users.id')
-      .where('projects.id=:projectId AND user_project.userId=:userId');
+      .where('projects.id=:projectId AND user_project.userId=:userId AND projects.status is null');
 
     return sql.toString();
   }
@@ -18,7 +18,11 @@ class ProjectModel {
     } = query;
     const sql = squel.select();
 
-    const where = squel.expr().and('user_project.userId=?', id);
+    const where = squel.expr();
+
+    where.and('projects.status is null')
+      .and('user_project.userId=?', id);
+
     if (keyword) {
       where.and('projects.name LIKE ?', `%${keyword}%`);
     }
