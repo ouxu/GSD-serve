@@ -15,7 +15,7 @@ token: {{token}}
 }
 
 ### get project
-GET {{BaseURL}}/project/info/1012 HTTP/1.1
+GET {{BaseURL}}/project/info/1022 HTTP/1.1
 token: {{token}}
 
 ### get projects
@@ -47,7 +47,7 @@ content-type: {{contentType}}
 token: {{token}}
 
 {
-	"id": "1012"
+	"id": "1022"
 }
 
 ### migrate project owner
@@ -56,6 +56,6 @@ content-type: {{contentType}}
 token: {{token}}
 
 {
-	"id": "1012",
+	"id": "1013",
   "ownerId": "3"
 }

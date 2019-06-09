@@ -4,13 +4,13 @@ const PAGE = 1;
 const SIZE = 10;
 
 class ProjectController {
-  static async createProject(ctx) {
+  static async create(ctx) {
     ctx.validateBody('name').required().isString();
     ctx.validateBody('description').required().isString();
     ctx.validateBody('users').optional().toArray().isArray();
 
     const { id = '' } = ctx.user;
-    const insertId = await service.createProject(ctx, id, ctx.vals);
+    const insertId = await service.create(ctx, id, ctx.vals);
     if (!insertId) {
       ctx.throw('项目创建失败');
     }
@@ -18,7 +18,7 @@ class ProjectController {
     ctx.body = insertId;
   }
 
-  static async getProject(ctx) {
+  static async get(ctx) {
     ctx.validateParam('id').required().isString();
     const projectId = ctx.vals.id;
     const { id = '' } = ctx.user;
@@ -27,7 +27,7 @@ class ProjectController {
     if (!hasPerm) {
       ctx.throw('用户权限不足');
     }
-    const project = await service.getProject(ctx, id, projectId);
+    const project = await service.get(ctx, id, projectId);
     if (!project || !project.id) {
       ctx.throw('项目不存在');
     }
@@ -44,7 +44,7 @@ class ProjectController {
     ctx.body = projects;
   }
 
-  static async updateProject(ctx) {
+  static async update(ctx) {
     ctx.validateBody('id').required().isString();
     ctx.validateBody('name').required().isString();
     ctx.validateBody('description').required().isString();
@@ -56,12 +56,12 @@ class ProjectController {
       ctx.throw('用户权限不足');
     }
 
-    const result = await service.updateProject(ctx, id, ctx.vals);
+    const result = await service.update(ctx, id, ctx.vals);
 
     ctx.body = result;
   }
 
-  static async deleteProject(ctx) {
+  static async delete(ctx) {
     ctx.validateBody('id').required().isString();
 
     const { id = '' } = ctx.user;
@@ -70,7 +70,7 @@ class ProjectController {
     if (!hasPerm) {
       ctx.throw('用户权限不足');
     }
-    const result = await service.deleteProject(ctx, ctx.vals.id);
+    const result = await service.delete(ctx, ctx.vals.id);
 
     ctx.body = result;
   }

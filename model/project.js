@@ -1,4 +1,4 @@
-const squel = require('squel');
+const squel = require('squel').useFlavour('mysql');
 
 class ProjectModel {
   static getProject() {
@@ -52,6 +52,20 @@ class ProjectModel {
       .field('COUNT(*)', 'count')
       .join('user_project', null, 'projects.id=user_project.projectId')
       .where(where.toString());
+
+    return sql.toString();
+  }
+
+  static replaceUsers(query) {
+    const { userId, projectId } = query;
+
+    const sql = squel.replace();
+
+    sql.into('user_project')
+      .setFields({
+        userId,
+        projectId,
+      });
 
     return sql.toString();
   }

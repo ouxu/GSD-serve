@@ -1,10 +1,10 @@
 const model = require('../model/project');
 
 class ProjectService {
-  static async createProject(ctx, userId, vals) {
+  static async create(ctx, userId, vals) {
     const { name, description, users = [] } = vals;
     const formatUsers = Array.from(new Set([...users, userId].map(e => +e)));
-    const rows = {
+    const row = {
       name,
       description,
       ownerId: userId,
@@ -13,7 +13,7 @@ class ProjectService {
     };
     const tran = await ctx.db.beginTransaction();
     try {
-      const res = await tran.insert('projects', rows);
+      const res = await tran.insert('projects', row);
       const projectId = res.insertId;
 
       const usersRows = formatUsers.map(e => ({
@@ -45,7 +45,7 @@ class ProjectService {
     return !!row;
   }
 
-  static async getProject(ctx, userId, projectId) {
+  static async get(ctx, userId, projectId) {
     const rows = await ctx.db.query(model.getProject(), { projectId, userId });
 
     if (rows && rows[0]) {
@@ -70,13 +70,13 @@ class ProjectService {
     };
   }
 
-  static async updateProject(ctx, userId, vals) {
+  static async update(ctx, userId, vals) {
     const {
       id, name, description, users = [],
     } = vals;
     const formatUsers = Array.from(new Set([...users, userId].map(e => +e)));
 
-    const rows = {
+    const row = {
       id,
       name,
       description,
@@ -84,7 +84,7 @@ class ProjectService {
     };
     const tran = await ctx.db.beginTransaction();
     try {
-      await tran.update('projects', rows);
+      await tran.update('projects', row);
       await tran.delete('user_project', {
         projectId: id,
       });
@@ -101,25 +101,34 @@ class ProjectService {
     }
   }
 
-  static async deleteProject(ctx, id) {
-    const rows = {
+  static async delete(ctx, id) {
+    const row = {
       id,
       status: 'delete',
       updatedAt: ctx.db.literals.now,
     };
-    await ctx.db.update('projects', rows);
+    await ctx.db.update('projects', row);
     return true;
   }
 
   static async migrateOwner(ctx, vals) {
     const { id, ownerId } = vals;
-    const rows = {
+    const row = {
       id,
       ownerId,
       updatedAt: ctx.db.literals.now,
     };
-    await ctx.db.update('projects', rows);
-    return true;
+    const tran = await ctx.db.beginTransaction();
+
+    try {
+      await ctx.db.update('projects', row);
+      await ctx.db.query(model.replaceUsers({ projectId: id, userId: ownerId }));
+      await tran.commit();
+      return true;
+    } catch (err) {
+      await tran.rollback();
+      throw err;
+    }
   }
 }
 
