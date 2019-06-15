@@ -96,6 +96,23 @@ class StructureController {
 
     ctx.body = result;
   }
+
+  static async updateItem(ctx) {
+    ctx.validateBody('id').required().isString();
+    ctx.validateBody('item').required().isJson();
+    ctx.validateBody('version').required().isString();
+    ctx.validateBody('versionComment').required().isString();
+
+    const { id = '' } = ctx.user;
+    const hasPerm = await service.checkPermission(ctx, id, ctx.vals.id);
+
+    if (!hasPerm) {
+      ctx.throw('用户权限不足');
+    }
+    const result = await service.updateItem(ctx, ctx.vals);
+
+    ctx.body = result;
+  }
 }
 
 module.exports = StructureController;

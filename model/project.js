@@ -32,6 +32,7 @@ class ProjectModel {
       .join('user_project', null, 'projects.id=user_project.projectId')
       .join('users', null, 'projects.ownerId=users.id')
       .where(where.toString())
+      .order('updatedAt', false)
       .limit(limit)
       .offset(offset);
 

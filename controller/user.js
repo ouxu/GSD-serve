@@ -44,6 +44,27 @@ class UserController {
     ctx.body = result;
   }
 
+  static async queryUsers(ctx) {
+    ctx.validateQuery('keyword').defaultTo('').toString();
+
+    const result = await service.queryUsers(ctx, ctx.vals.keyword);
+
+    if (!result) {
+      ctx.body = [];
+    } else {
+      ctx.body = result;
+    }
+  }
+
+  static async getMe(ctx) {
+    const { id = '' } = ctx.user;
+    const result = await service.getUser(ctx, id);
+    if (!result) {
+      ctx.throw('用户不存在');
+    }
+    ctx.body = result;
+  }
+
   static async update(ctx) {
     ctx.validateBody('username').optional().isString();
     ctx.validateBody('email').optional().isString().isEmail();

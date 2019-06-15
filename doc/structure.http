@@ -63,3 +63,15 @@ token: {{token}}
 	"id": "1008",
   "ownerId": "3"
 }
+
+### update structure item
+POST {{BaseURL}}/structure/updateItem HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002",
+  "item": "{}",
+  "version": "0.0.1",
+  "versionComment": "{{}}"
+}

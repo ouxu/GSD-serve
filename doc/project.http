@@ -19,15 +19,11 @@ GET {{BaseURL}}/project/info/1022 HTTP/1.1
 token: {{token}}
 
 ### get projects
-GET {{BaseURL}}/project/ HTTP/1.1
-content-type: {{contentType}}
+GET {{BaseURL}}/project
+  ?page=1
+  &size=20
+  &keyword=测试
 token: {{token}}
-
-{
-	"page": "1",
-	"size": "10",
-  "keyword": "测试"
-}
 
 ### update project
 POST {{BaseURL}}/project/update HTTP/1.1

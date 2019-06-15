@@ -136,6 +136,18 @@ class StructureService {
       throw err;
     }
   }
+
+  static async updateItem(ctx, vals) {
+    const { id, item = '' } = vals;
+    const row = {
+      id,
+      item,
+      updatedAt: ctx.db.literals.now,
+    };
+    await ctx.db.update('structures', row);
+
+    return true;
+  }
 }
 
 module.exports = StructureService;

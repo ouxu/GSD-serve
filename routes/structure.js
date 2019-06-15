@@ -9,5 +9,6 @@ router.get('/info/:id', structure.get);
 router.post('/update', structure.update);
 router.delete('/delete', structure.delete);
 router.post('/migrateOwner', structure.migrateOwner);
+router.post('/updateItem', structure.updateItem);
 
 module.exports = router;

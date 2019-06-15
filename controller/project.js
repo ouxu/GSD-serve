@@ -35,9 +35,9 @@ class ProjectController {
   }
 
   static async getProjects(ctx) {
-    ctx.validateBody('page').defaultTo(PAGE).toInt();
-    ctx.validateBody('size').defaultTo(SIZE).toInt();
-    ctx.validateBody('keyword').defaultTo('').toString();
+    ctx.validateQuery('page').defaultTo(PAGE).toInt();
+    ctx.validateQuery('size').defaultTo(SIZE).toInt();
+    ctx.validateQuery('keyword').defaultTo('').toString();
 
     const { id = '' } = ctx.user;
     const projects = await service.getProjects(ctx, id, ctx.vals);
@@ -45,7 +45,7 @@ class ProjectController {
   }
 
   static async update(ctx) {
-    ctx.validateBody('id').required().isString();
+    ctx.validateBody('id').required().isInt();
     ctx.validateBody('name').required().isString();
     ctx.validateBody('description').required().isString();
     ctx.validateBody('users').optional().toArray().isArray();

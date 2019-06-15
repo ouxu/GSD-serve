@@ -1,6 +1,7 @@
 
 const jsonwebtoken = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const squel = require('squel').useFlavour('mysql');
 const { jwt } = require('../config/index.js');
 const mail = require('../utils/mail.js');
 
@@ -10,6 +11,9 @@ class UserService {
 
     const rows = await ctx.db.query('SELECT * FROM users WHERE mobile=:identifier OR email=:identifier', { identifier });
     const result = rows && rows[0];
+    if (!result) {
+      ctx.throw('用户不存在');
+    }
     const isMatch = await bcrypt.compare(password, result.password);
 
     if (!isMatch) {
@@ -48,6 +52,18 @@ class UserService {
     const result = await ctx.db.get('users', { id }, {
       columns: ['id', 'username', 'mobile', 'email', 'avatar', 'signature', 'gender', 'birthday', 'createdAt'],
     });
+
+    return result;
+  }
+
+  static async queryUsers(ctx, keyword) {
+    const sql = squel.select();
+    sql.from('users')
+      .fields(['id', 'username', 'avatar'])
+      .where('username LIKE ?', `%${keyword}%`)
+      .limit(50);
+
+    const result = await ctx.db.query(sql.toString());
 
     return result;
   }

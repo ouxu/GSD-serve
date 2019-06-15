@@ -28,13 +28,22 @@ token: {{token}}
 GET  {{BaseURL}}/user/info/6 HTTP/1.1
 token: {{token}}
 
+### query user by keyword
+GET  {{BaseURL}}/user/query?keyword=J HTTP/1.1
+token: {{token}}
+
+### get user me
+GET  {{BaseURL}}/user/info/me HTTP/1.1
+token: {{token}}
+
 ### update userinfo
 POST  {{BaseURL}}/user/info/update HTTP/1.1
 content-type: {{contentType}}
 token: {{token}}
 
 {
-	"birthday": "{{dateNow}}"
+	"birthday": "{{dateNow}}",
+  "avatar": "http://netdisk.qn.outxu.cn/17-12-16/31247571.jpg"
 }
 
 ### modify password
