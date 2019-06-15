@@ -47,11 +47,17 @@ class ProjectService {
 
   static async get(ctx, userId, projectId) {
     const rows = await ctx.db.query(model.getProject(), { projectId, userId });
-
+    const users = await this.getUsers(ctx, projectId);
     if (rows && rows[0]) {
+      rows[0].users = users;
       return rows[0];
     }
     return {};
+  }
+
+  static async getUsers(ctx, projectId) {
+    const rows = await ctx.db.query(model.getProjectUsers(), { projectId });
+    return rows || [];
   }
 
   static async getProjects(ctx, id, params) {

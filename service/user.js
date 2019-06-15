@@ -20,10 +20,10 @@ class UserService {
       ctx.throw('密码错误');
     }
 
-    const { nickname, id, role = 'user' } = result;
+    const { username, id, role = 'user' } = result;
 
     const token = jsonwebtoken.sign({
-      data: { nickname, id, role },
+      data: { username, id, role },
       // 60 seconds * 60 minutes = 1 hour, 共一个月
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30),
     }, jwt.secret);
@@ -91,10 +91,10 @@ class UserService {
   static async forgetPassword(ctx, vals) {
     const { email } = vals;
     const user = await ctx.db.get('users', { email });
-    const { nickname, id } = user;
+    const { username, id } = user;
 
     const token = jsonwebtoken.sign({
-      data: { nickname, id },
+      data: { username, id },
       // 60 seconds * 60 minutes = 1 hour, 共一个月
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
     }, jwt.secret);

@@ -13,6 +13,7 @@
     "@koa/cors": "^2.2.2",
     "ali-rds": "^3.2.0",
     "bcrypt": "^3.0.6",
+    "cos-nodejs-sdk-v5": "^2.5.9",
     "dayjs": "^1.8.13",
     "excel-export": "^0.5.1",
     "jsonwebtoken": "^8.5.1",
@@ -31,7 +32,8 @@
     "nodemailer": "^4.4.0",
     "require-all": "^3.0.0",
     "restc": "^0.3.2",
-    "squel": "^5.12.2"
+    "squel": "^5.12.2",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",

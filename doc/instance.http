@@ -1,0 +1,73 @@
+@BaseURL = http://localhost:3003/api
+@contentType = application/json
+@dateNow = {{$datetime iso8601}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiSm9obiIsImlkIjo2LCJyb2xlIjoidXNlciJ9LCJleHAiOjE1NjMyMTI0ODQsImlhdCI6MTU2MDYyMDQ4NH0.Axtn0To5qmrkGJPCU0T47oHIzBnVu-DW6L0b2JqjMKI
+
+### create instance
+POST {{BaseURL}}/instance/create HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"name": "测试实例{{dateNow}}",
+	"description": "测试实例{{dateNow}}",
+  "structureId": 1002,
+  "projectId": 1025,
+  "data": "{}"
+}
+
+### get instance
+GET {{BaseURL}}/instance/info/1003 HTTP/1.1
+token: {{token}}
+
+### get instances
+GET {{BaseURL}}/instance
+  ?projectId=1025
+  &page=1
+  &size=10
+token: {{token}}
+
+### update instance
+POST {{BaseURL}}/instance/update HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002",
+  "name": "测试结构{{dateNow}}",
+	"description": "测试结构{{dateNow}}",
+  "users": ["6"],
+  "tags": ["测试2", "测试3"],
+  "open": true
+}
+
+### delete instance
+DELETE {{BaseURL}}/instance/delete HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002"
+}
+
+### migrate instance owner
+POST {{BaseURL}}/instance/migrateOwner HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1008",
+  "ownerId": "3"
+}
+
+### update instance item
+POST {{BaseURL}}/instance/updateItem HTTP/1.1
+content-type: {{contentType}}
+token: {{token}}
+
+{
+	"id": "1002",
+  "item": "{}",
+  "version": "0.0.1",
+  "versionComment": "{{}}"
+}

@@ -39,9 +39,9 @@ class StructureController {
   }
 
   static async getStructures(ctx) {
-    ctx.validateBody('page').defaultTo(PAGE).toInt();
-    ctx.validateBody('size').defaultTo(SIZE).toInt();
-    ctx.validateBody('keyword').defaultTo('').toString();
+    ctx.validateQuery('page').defaultTo(PAGE).toInt();
+    ctx.validateQuery('size').defaultTo(SIZE).toInt();
+    ctx.validateQuery('keyword').defaultTo('').toString();
 
     const { id = '' } = ctx.user;
     const projects = await service.getStructures(ctx, id, ctx.vals);

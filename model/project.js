@@ -12,6 +12,18 @@ class ProjectModel {
     return sql.toString();
   }
 
+  static getProjectUsers() {
+    const sql = squel.select();
+    sql.from('users')
+      .field('users.id', 'id')
+      .field('users.username', 'username')
+      .field('users.avatar', 'avatar')
+      .join('user_project', null, 'users.id=user_project.userId')
+      .where('user_project.projectId=:projectId');
+
+    return sql.toString();
+  }
+
   static getProjects(query) {
     const {
       limit, offset, id, keyword,
