@@ -12,7 +12,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "ali-rds": "^3.2.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "cos-nodejs-sdk-v5": "^2.5.9",
     "dayjs": "^1.8.13",
     "excel-export": "^0.5.1",
