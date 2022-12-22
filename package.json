@@ -16,7 +16,7 @@
     "cos-nodejs-sdk-v5": "^2.5.9",
     "dayjs": "^1.8.13",
     "excel-export": "^0.5.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "just-flush": "^1.1.0",
     "koa": "2.x",
     "koa-bodyparser": "^4.2.0",
